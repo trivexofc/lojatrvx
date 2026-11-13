@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Loja</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Bricolage+Grotesque:opsz,wght@12..96,700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
+<style>
+:root{--ink:#1A1033;--vi:#6B3DFF;--vi2:#EDE6FF;--mut:#6C6486;--ok:#0FA37F;--ok2:#D5F5EA;--co:#FF6B4A;--bd:#E0D8F2;--fld:#F1ECFB;--f:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;--fd:"Bricolage Grotesque",var(--f)}
+*{box-sizing:border-box}body{margin:0;background:var(--ink);color:var(--ink);font:15px/1.5 var(--f);min-height:100vh;position:relative;overflow-x:hidden}
+body::before{content:"";position:fixed;width:460px;height:460px;border-radius:44% 56% 60% 40%;background:var(--vi);right:-150px;top:-260px;pointer-events:none}
+.wrap{position:relative;max-width:1020px;margin:0 auto;padding:22px 14px 120px}
+.top{display:flex;align-items:center;gap:10px;color:#fff;font:700 20px var(--fd);letter-spacing:-.02em;margin:6px 4px 16px}
+.top i{width:34px;height:34px;border-radius:38%;background:var(--vi);transform:rotate(-7deg);display:grid;place-items:center}
+.card{background:#FBFAFF;border-radius:30px;padding:24px;margin-bottom:16px}
+h1{font:700 clamp(26px,5vw,38px)/1.1 var(--fd);letter-spacing:-.03em;margin:0 0 6px}h2{font:700 19px var(--fd);margin:0 0 12px}.sub{color:var(--mut);margin:0}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+input,textarea,select{font:inherit;color:var(--ink);background:#fff;border:2px solid var(--bd);border-radius:14px;padding:11px 14px;width:100%}input:focus,textarea:focus,select:focus{outline:0;border-color:var(--vi)}
+textarea{resize:vertical;min-height:110px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit;font-weight:600;border:0;border-radius:99px;padding:10px 18px;background:var(--vi2);color:var(--vi);cursor:pointer}button.p{background:var(--vi);color:#fff}button.w{background:#1FA855;color:#fff}button:disabled{opacity:.5;cursor:default}
+.chip{background:#fff;color:var(--ink);border:2px solid var(--bd);padding:7px 15px;font-weight:500}.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.it{background:#fff;border:2px solid var(--bd);border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:8px}.it.in{border-color:var(--vi)}
+.it h3{font:700 17px var(--fd);margin:0;letter-spacing:-.01em}.it p{margin:0;color:var(--mut);font-size:14px;flex:1}
+.pr{font:700 22px var(--fd);letter-spacing:-.02em}.pr small{font:500 13px var(--f);color:var(--mut)}
+.bg{padding:3px 11px;border-radius:99px;font-size:12px;font-weight:700;align-self:flex-start}.k-sistema{background:var(--vi2);color:var(--vi)}.k-adicional{background:var(--ok2);color:var(--ok)}.k-mensal{background:#FFF1D6;color:#9A5B00}
+.qty{display:flex;align-items:center;gap:10px}.qty button{padding:6px 14px}.qty b{min-width:22px;text-align:center}
+.cartbar{position:fixed;left:12px;right:12px;bottom:14px;max-width:600px;margin:0 auto;background:var(--vi);color:#fff;border-radius:99px;padding:14px 22px;display:none;justify-content:space-between;align-items:center;box-shadow:0 14px 36px rgba(0,0,0,.4);z-index:20;font-size:16px}
+.cartbar.on{display:flex}.cartbar b{font:700 18px var(--fd)}
+.ov{position:fixed;inset:0;background:rgba(10,5,25,.7);display:none;align-items:center;justify-content:center;padding:14px;z-index:40}.ov.on{display:flex}
+.sheet{background:#FBFAFF;border-radius:30px;width:100%;max-width:640px;max-height:94vh;overflow:auto;padding:24px}
+.line{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd)}.line .t{flex:1;min-width:0}.line .t b{display:block}.line .t small{color:var(--mut)}
+.tot{display:flex;justify-content:space-between;padding:6px 0;font-size:15px}.tot b{font:700 18px var(--fd)}
+label{display:block;font-size:13px;color:var(--mut);margin:12px 0 5px}
+.err{color:var(--co);font-weight:600;min-height:20px;margin:8px 0}
+.acts{display:grid;gap:10px;margin-top:10px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.msg{color:#fff;text-align:center;padding:70px 10px}.msg h1{color:#fff}.empty{color:var(--mut);padding:24px;text-align:center;grid-column:1/-1}
+@media(max-width:560px){.card{padding:18px;border-radius:26px}.sheet{padding:18px;border-radius:26px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></i><span id="own">Loja</span></div>
+  <div id="app"><div class="msg"><p>Carregando...</p></div></div>
+</div>
+<button class="cartbar" id="cartbar"><span id="cbn">0 itens</span><b id="cbt"></b></button>
+<div class="ov" id="ov"><div class="sheet" id="sheet"></div></div>
+<script>
+// ====== CONFIGURE AQUI: os mesmos dados do seu sistema ======
+const SUPABASE_URL="https://keoigxrqybkxktpvuuoj.supabase.co";
+const SUPABASE_KEY="sb_publishable_B9FUEQRyXw8o1OkvUaP6SQ_BXCIMdMB";
+// ============================================================
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const brl=v=>Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const KL={sistema:"Sistema",adicional:"Adicional",mensal:"Mensal"},KP={sistema:"Sistemas",adicional:"Adicionais",mensal:"Mensais"};
+let sb,TOKEN="",ST=null,CART={},F={kind:"todos",cat:"todas",q:""},STORE_KEY="";
+const kOf=i=>i.kind||"sistema";
+const waNum=p=>{let d=String(p||"").replace(/\D/g,"");if(!d)return"";if(d.length<=11)d="55"+d;return d};
+const saveCart=()=>{try{localStorage.setItem(STORE_KEY,JSON.stringify(CART))}catch(e){}};
+const loadCart=()=>{try{CART=JSON.parse(localStorage.getItem(STORE_KEY)||"{}")||{}}catch(e){CART={}}};
+function fail(t,m){$("#app").innerHTML=`<div class="msg"><h1>${t}</h1><p>${m}</p></div>`}
+async function load(){
+  TOKEN=decodeURIComponent((location.hash||"").replace(/^#/,"")).trim();
+  if(TOKEN.length<16)return fail("Link inválido","Peça o link da loja para quem enviou esta página.");
+  if(typeof supabase==="undefined")return fail("Sem conexão","Não foi possível carregar a página. Verifique a internet e tente de novo.");
+  sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:false}});
+  const{data,error}=await sb.rpc("store_get",{p_token:TOKEN});
+  if(error)return fail("Algo deu errado","Não foi possível abrir a loja agora. Tente de novo em alguns minutos.");
+  if(!data)return fail("Loja indisponível","Este link não está ativo. Peça um novo link para quem enviou.");
+  ST=data;STORE_KEY="loja-"+TOKEN.slice(0,12);loadCart();
+  const ids=new Set((ST.items||[]).map(i=>i.id));Object.keys(CART).forEach(k=>{if(!ids.has(k))delete CART[k]});
+  $("#own").textContent=ST.title;document.title=ST.title;draw();
+}
+const cats=()=>[...new Set((ST.items||[]).map(i=>i.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+const filtered=()=>(ST.items||[]).filter(i=>(F.kind==="todos"||kOf(i)===F.kind)&&(F.cat==="todas"||i.category===F.cat)&&(!F.q||(i.name+" "+(i.descr||"")+" "+(i.category||"")).toLowerCase().includes(F.q.toLowerCase())));
+function totals(){let once=0,mon=0,n=0;for(const i of ST.items||[]){const q=CART[i.id]||0;if(!q)continue;n+=q;if(kOf(i)==="mensal")mon+=i.price*q;else once+=i.price*q}return{once,mon,n}}
+function draw(){
+  const kinds=[["todos","Tudo"],...["sistema","adicional","mensal"].filter(k=>(ST.items||[]).some(i=>kOf(i)===k)).map(k=>[k,KP[k]])],cs=cats();
+  $("#app").innerHTML=`<div class="card"><h1>${esc(ST.title)}</h1><p class="sub">${esc(ST.intro||"Escolha o que você precisa, monte o seu pedido e envie. Respondemos o quanto antes.")}</p>
+  <div class="bar"><input id="q" placeholder="Buscar serviços..." value="${esc(F.q)}" style="flex:1 1 220px;width:auto"></div>
+  <div class="bar chips">${kinds.map(k=>`<button class="chip ${F.kind===k[0]?"on":""}" data-k="${k[0]}">${k[1]}</button>`).join("")}</div>
+  ${cs.length?`<div class="bar chips">${[["todas","Todas as categorias"],...cs.map(c=>[c,c])].map(c=>`<button class="chip ${F.cat===c[0]?"on":""}" data-c="${esc(c[0])}">${esc(c[1])}</button>`).join("")}</div>`:""}</div>
+  <div class="grid" id="grid">${grid()}</div>`;
+  bar();
+}
+function grid(){
+  const l=filtered();
+  return l.map(i=>{const q=CART[i.id]||0;return `<div class="it ${q?"in":""}"><span class="bg k-${kOf(i)}">${KL[kOf(i)]}</span><h3>${esc(i.name)}</h3><p>${esc(i.descr||"")}</p>${i.category?`<small class="sub">${esc(i.category)}</small>`:""}<div class="pr">${brl(i.price)}${kOf(i)==="mensal"?" <small>/mês</small>":""}</div>${q?`<div class="qty"><button data-m="${i.id}">−</button><b>${q}</b><button data-p="${i.id}">+</button></div>`:`<button class="p" data-add="${i.id}">Adicionar ao pedido</button>`}</div>`}).join("")||'<p class="empty">Nenhum serviço encontrado com este filtro.</p>';
+}
+function bar(){const t=totals(),b=$("#cartbar");b.classList.toggle("on",t.n>0);$("#cbn").textContent="Ver meu pedido ("+t.n+(t.n===1?" item":" itens")+")";$("#cbt").textContent=[t.once?brl(t.once):"",t.mon?brl(t.mon)+"/mês":""].filter(Boolean).join(" + ")}
+function setQ(id,d){const q=Math.max(0,Math.min(99,(CART[id]||0)+d));if(q)CART[id]=q;else delete CART[id];saveCart();$("#grid")&&($("#grid").innerHTML=grid());bar();if($("#ov").classList.contains("on"))openCart()}
+function openCart(msg){
+  const t=totals(),items=(ST.items||[]).filter(i=>CART[i.id]);
+  if(!items.length){$("#ov").classList.remove("on");return}
+  const wa=waNum(ST.whatsapp),f=window.__f||{name:"",phone:"",spec:""};
+  $("#sheet").innerHTML=`<h2>Meu pedido</h2>${items.map(i=>`<div class="line"><div class="t"><b>${esc(i.name)}</b><small>${KL[kOf(i)]} • ${brl(i.price)}${kOf(i)==="mensal"?"/mês":""}</small></div><div class="qty"><button data-m="${i.id}">−</button><b>${CART[i.id]}</b><button data-p="${i.id}">+</button></div><button data-rm="${i.id}" title="Remover" style="background:none;color:var(--co);padding:6px 10px">✕</button></div>`).join("")}
+  <div style="margin:12px 0">${t.once?`<div class="tot"><span>Pagamento único</span><b>${brl(t.once)}</b></div>`:""}${t.mon?`<div class="tot"><span>Mensalidade</span><b>${brl(t.mon)}/mês</b></div>`:""}</div>
+  <label>Seu nome *</label><input id="fn" autocomplete="name" value="${esc(f.name)}">
+  <label>Seu WhatsApp ou telefone *</label><input id="fp" type="tel" autocomplete="tel" placeholder="(11) 90000-0000" value="${esc(f.phone)}">
+  <label>Especificação: que tipo de sistema você precisa? *</label><textarea id="fs" placeholder="Conte o que você precisa. Ex.: um sistema de agendamento para a minha clínica, com cadastro de pacientes e lembrete por WhatsApp.">${esc(f.spec)}</textarea>
+  <input class="hp" id="fh" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <div class="err" id="er">${esc(msg||"")}</div>
+  <div class="acts">${wa?`<button class="w" data-s="wa">Enviar pelo WhatsApp</button>`:""}<button class="p" data-s="sys">Enviar para a loja</button>${wa?`<button data-s="both">Enviar nos dois</button>`:""}<button data-x style="background:none">Continuar escolhendo</button></div>`;
+  $("#ov").classList.add("on");
+}
+function readForm(){const f={name:($("#fn").value||"").trim(),phone:($("#fp").value||"").trim(),spec:($("#fs").value||"").trim()};window.__f=f;
+  if(f.name.length<2)return{e:"Digite o seu nome."};if(f.phone.replace(/\D/g,"").length<10)return{e:"Digite um telefone com DDD."};if(f.spec.length<3)return{e:"Conte que tipo de sistema você precisa."};return{f}}
+function waUrl(f){
+  const t=totals(),items=(ST.items||[]).filter(i=>CART[i.id]);
+  const msg=`Olá! Quero fazer um pedido:\n\n*Itens*\n${items.map(i=>`• ${CART[i.id]}x ${i.name} (${KL[kOf(i)]}) - ${brl(i.price*CART[i.id])}${kOf(i)==="mensal"?"/mês":""}`).join("\n")}\n\n${t.once?`*Pagamento único:* ${brl(t.once)}\n`:""}${t.mon?`*Mensalidade:* ${brl(t.mon)}/mês\n`:""}\n*Nome:* ${f.name}\n*WhatsApp:* ${f.phone}\n*O que eu preciso:* ${f.spec}`;
+  return "https://wa.me/"+waNum(ST.whatsapp)+"?text="+encodeURIComponent(msg);
+}
+function done(mode,url){
+  CART={};saveCart();window.__f=null;$("#grid")&&($("#grid").innerHTML=grid());bar();
+  $("#sheet").innerHTML=`<h2>${mode==="wa"?"Quase lá!":"Pedido enviado!"}</h2><p>${mode==="wa"?"Se o WhatsApp não abriu, toque no botão abaixo para enviar a mensagem.":"Recebemos o seu pedido e vamos entrar em contato pelo número que você informou."}</p><div class="acts">${url&&mode!=="sys"?`<a href="${esc(url)}" target="_blank" rel="noopener"><button class="w" style="width:100%">Abrir o WhatsApp</button></a>`:""}<button class="p" data-x>Voltar para a loja</button></div>`;
+}
+async function send(mode){
+  if($("#fh").value)return;
+  const r=readForm();if(r.e){$("#er").textContent=r.e;return}
+  const f=r.f,url=mode!=="sys"?waUrl(f):"";
+  if(mode==="wa"){const w=window.open(url,"_blank");done("wa",url);return}
+  const w=mode==="both"?window.open("about:blank","_blank"):null;
+  document.querySelectorAll("[data-s]").forEach(b=>b.disabled=true);
+  const items=Object.keys(CART).map(id=>({id,qty:CART[id]}));
+  const{data,error}=await sb.rpc("store_order",{p_token:TOKEN,p_name:f.name,p_phone:f.phone,p_spec:f.spec,p_items:items,p_channel:mode==="both"?"ambos":"sistema"});
+  if(error||!data||!data.ok){if(w)w.close();openCart(data&&data.error==="limit"?"Muitos pedidos em pouco tempo. Tente de novo mais tarde.":"Não foi possível enviar agora. Tente de novo ou use o WhatsApp.");return}
+  if(w)w.location=url;
+  done(mode,url);
+}
+document.addEventListener("click",e=>{
+  const g=a=>e.target.closest("["+a+"]");let x;
+  if(x=g("data-k")){F.kind=x.dataset.k;draw()}
+  else if(x=g("data-c")){F.cat=x.dataset.c;draw()}
+  else if(x=g("data-add")){setQ(x.dataset.add,1)}
+  else if(x=g("data-p")){setQ(x.dataset.p,1)}
+  else if(x=g("data-m")){setQ(x.dataset.m,-1)}
+  else if(x=g("data-rm")){CART[x.dataset.rm]=0;setQ(x.dataset.rm,0)}
+  else if(x=g("data-s")){send(x.dataset.s)}
+  else if(g("data-x")){$("#ov").classList.remove("on")}
+  else if(e.target.closest("#cartbar")){openCart()}
+  else if(e.target.id==="ov"){$("#ov").classList.remove("on")}
+});
+document.addEventListener("input",e=>{if(e.target.id==="q"){F.q=e.target.value;$("#grid").innerHTML=grid()}});
+load();
+</script>
+</body>
+</html>
